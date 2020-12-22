@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "pretty": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "inlineSourceMap": true,
+    "inlineSources": false,
+    "allowJs": true,
+    "outDir": "build",
+    "baseUrl": "./src",
+    "rootDir": "src",
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@shared/*": ["./shared/*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./src/@types/"
+    ]
+  },
+  "include": ["src/**/*", "**/*.env", "src/**/*.json", "./src/@types/*.d.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

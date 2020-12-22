@@ -1,0 +1,6539 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This a alpha version of API Documention",
+    "version": "1.4",
+    "title": "My Community | API Documention",
+    "contact": {
+      "email": "shekohex@gmail.com"
+    }
+  },
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "User",
+      "description": "the User entity"
+    },
+    {
+      "name": "Authentication",
+      "description": "Authorization and Authentication Process"
+    },
+    {
+      "name": "Contacts",
+      "description": "the Relations between users"
+    },
+    {
+      "name": "Status",
+      "description": "the Status entity"
+    },
+    {
+      "name": "Media",
+      "description": "the Media entity"
+    },
+    {
+      "name": "Timeline",
+      "description": "Users Timeline"
+    },
+    {
+      "name": "Notifications",
+      "description": "Users Notifications"
+    },
+    {
+      "name": "Live Video",
+      "description": "Live Streaming"
+    },
+    {
+      "name": "Analytics",
+      "description": "User Data Statics and Analysis"
+    },
+    {
+      "name": "Advertisement",
+      "description": "the Advertisement Entity"
+    },
+    {
+      "name": "Payment",
+      "description": "the Payment Entity"
+    },
+    {
+      "name": "TechnicalSupport",
+      "description": "Sending Messages to tech support"
+    },
+    {
+      "name": "Reports",
+      "description": "Report a User or a Status"
+    },
+    {
+      "name": "StaticFiles",
+      "description": "Recent uploaded Static files (video, image)"
+    },
+    {
+      "name": "Debuging",
+      "description": "Only For Development"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/dev/logs": {
+      "get": {
+        "summary": "Get Development Logs",
+        "description": "This for development only",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "messageOnly",
+            "required": false,
+            "in": "query",
+            "description": "only return the log message, default: false"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "an page to start from, default: 1"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "the logs limit, default: 30"
+          },
+          {
+            "name": "level",
+            "required": false,
+            "in": "query",
+            "description": "only return the requested log level, one of [error, info, warn] default: null",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "an array of logs"
+          }
+        },
+        "tags": [
+          "Debuging"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/find/all": {
+      "get": {
+        "summary": "List Users",
+        "description": "List All Users",
+        "deprecated": true,
+        "parameters": [
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list of the users"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/find": {
+      "get": {
+        "summary": "Find a user by id",
+        "description": "Find a user by id",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "metadata",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the user object",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "cuz you are not contacts with each other"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/find/mobile": {
+      "get": {
+        "summary": "Find a user by Mobile Number",
+        "description": "Find a user by Mobile Number",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "metadata",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "number",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the user object",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/find/users": {
+      "post": {
+        "summary": "Find users by there ids",
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/create": {
+      "post": {
+        "summary": "Create New User",
+        "parameters": [
+          {
+            "name": "CreateUserDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the created user token",
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update": {
+      "post": {
+        "summary": "Update The user",
+        "parameters": [
+          {
+            "name": "UpdateUserDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the updated user token",
+            "schema": {
+              "type": ""
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/channel-name": {
+      "post": {
+        "summary": "Update The ChannelName",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/channel": {
+      "post": {
+        "summary": "Update The ChannelName",
+        "parameters": [
+          {
+            "name": "UpdateChannelDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateChannelDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/channel": {
+      "get": {
+        "summary": "Get user personal Channel",
+        "responses": {
+          "200": {
+            "description": "personal channel info returned"
+          },
+          "404": {
+            "description": "Prsonal channel not found"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/profile-pic": {
+      "post": {
+        "summary": "Update user Profile Picture",
+        "parameters": [
+          {
+            "name": "UpdateProfilePicDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateProfilePicDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile Photo Updated"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/channel-pic": {
+      "post": {
+        "summary": "Update channel Profile Picture",
+        "parameters": [
+          {
+            "name": "UpdateProfilePicDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateProfilePicDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile Photo Updated"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/token": {
+      "post": {
+        "summary": "Update user token",
+        "parameters": [
+          {
+            "name": "UserTokenDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserTokenDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user updated token"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/device-token": {
+      "post": {
+        "summary": "Update/set User Device Token",
+        "parameters": [
+          {
+            "name": "DeviceTokenDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DeviceTokenDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device Token Updated"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/mac": {
+      "post": {
+        "summary": "Update/set User MacAdress",
+        "parameters": [
+          {
+            "name": "UserMacAdressDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserMacAdressDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "MacAdress Updated"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/check/mac": {
+      "post": {
+        "summary": "Check the current User MacAdress",
+        "parameters": [
+          {
+            "name": "UserMacAdressDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserMacAdressDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "isMatch: boolean"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/publiclist": {
+      "post": {
+        "summary": "Get a list of public users to follow up.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "count",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/update/state": {
+      "post": {
+        "summary": "Update/set User State [Employee Only]",
+        "parameters": [
+          {
+            "name": "UserStateDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserStateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/delete": {
+      "delete": {
+        "summary": "Delete User from the system, by token",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channels/list": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login By Mobile Number",
+        "description": "let the user login by mobile number",
+        "parameters": [
+          {
+            "name": "LoginProcess",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/LoginProcess"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the requestId after sending the message",
+            "schema": {
+              "type": ""
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/auth/login/mobile": {
+      "post": {
+        "parameters": [
+          {
+            "name": "LoginProcess",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/LoginProcess"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/auth/login/verify": {
+      "post": {
+        "summary": "verify Login process",
+        "description": "get the token by verifing the login process",
+        "parameters": [
+          {
+            "name": "LoginVerify",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/LoginVerify"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the user token after verifing the user requestId"
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/upload": {
+      "post": {
+        "summary": "upload user contacts",
+        "description": "let the user upload his contacts",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "shouldReturnUsers",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "UploadContactsDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UploadContactsDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contacts Saved"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/add": {
+      "post": {
+        "summary": "add new contact",
+        "description": "let the user upload new contact to his contacts list",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "shouldReturnUser",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "contact",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/UserContactsInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contacts Saved"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/remove": {
+      "delete": {
+        "summary": "remove contact",
+        "description": "let the user remove contact from his contacts list",
+        "parameters": [
+          {
+            "name": "contact",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/UserContactsInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact Removed"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/update": {
+      "post": {
+        "summary": "update contact",
+        "description": "let the user update contact from his contacts list",
+        "parameters": [
+          {
+            "name": "contact",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/UserContactsInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact Updated"
+          },
+          "404": {
+            "description": "Contact Not Found"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/favourite": {
+      "post": {
+        "summary": "favourite contact",
+        "description": "let the user favourite contact from his contacts list",
+        "parameters": [
+          {
+            "name": "contact",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/UserContactsInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact Favourited"
+          },
+          "404": {
+            "description": "Contact Not Found"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/unfavourite": {
+      "post": {
+        "summary": "unfavourite contact",
+        "description": "let the user unfavourite contact from his contacts list",
+        "parameters": [
+          {
+            "name": "contact",
+            "required": true,
+            "in": "body",
+            "isArray": false,
+            "schema": {
+              "$ref": "#/definitions/UserContactsInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact UnFavourited"
+          },
+          "404": {
+            "description": "Contact Not Found"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/contacts/list": {
+      "get": {
+        "summary": "list user contacts",
+        "description": "let the user get his contacts list",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "countOnly",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Contacts",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserContacts"
+              }
+            }
+          },
+          "404": {
+            "description": "Contact Not Found"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/friends/list": {
+      "get": {
+        "summary": "list user friends",
+        "description": "let the user get his friends list, contacts that only has a users",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "favouritedOnly",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Friends",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserContacts"
+              }
+            }
+          },
+          "404": {
+            "description": "Contacts Not Found"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/follow/requests/list": {
+      "get": {
+        "summary": "list my following requests",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/follow/request/{id}/accept": {
+      "post": {
+        "summary": "accept a following request",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/follow/request/{id}/cancel": {
+      "post": {
+        "summary": "cancel a following request",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/follow/requests/send": {
+      "post": {
+        "summary": "create a following request",
+        "parameters": [
+          {
+            "name": "FollowRequestDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/FollowRequestDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/{channelId}/follow": {
+      "post": {
+        "summary": "follow channel",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "channelId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/{channelId}/follow-request": {
+      "post": {
+        "summary": "follow channel",
+        "parameters": [
+          {
+            "name": "HandleChannelFollowRequestDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/HandleChannelFollowRequestDTO"
+            }
+          },
+          {
+            "type": "string",
+            "name": "channelId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/{channelId}/unfollow": {
+      "delete": {
+        "summary": "unfollow channel",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "channelId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/{channelId}/follow-requests": {
+      "get": {
+        "summary": "show the pending follow requests of channel ",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "channelId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/followingChannels": {
+      "get": {
+        "summary": "get user following channels",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/{channelId}/show-followers": {
+      "get": {
+        "summary": "get channel followers",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "channelId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/channel/{channelId}/following-status": {
+      "get": {
+        "summary": "get channel followers",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "channelId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/list": {
+      "get": {
+        "summary": "get user block list",
+        "responses": {
+          "200": {
+            "description": "User Block List",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UsersPrivacy"
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/list/channels": {
+      "get": {
+        "summary": "get user channel block list",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/add": {
+      "post": {
+        "summary": "block user",
+        "parameters": [
+          {
+            "name": "BlockUserDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/BlockUserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Blocked User",
+            "schema": {
+              "$ref": "#/definitions/UsersPrivacy"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/add/channel": {
+      "post": {
+        "summary": "block channel by id",
+        "parameters": [
+          {
+            "name": "BlockChannelDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/BlockChannelDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/update": {
+      "post": {
+        "summary": "update user privacy",
+        "parameters": [
+          {
+            "name": "BlockUserDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/BlockUserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Privacy updated"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/remove": {
+      "delete": {
+        "summary": "remove user privacy",
+        "responses": {
+          "200": {
+            "description": "Privacy updated"
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/privacy/remove/channel": {
+      "delete": {
+        "summary": "remove channel block (unblock)",
+        "parameters": [
+          {
+            "name": "BlockChannelDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/BlockChannelDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/upload/photo/base64": {
+      "post": {
+        "summary": "upload photo as base64",
+        "description": "upload a photo as base64 in the request body {image: \"\"}",
+        "responses": {
+          "200": {
+            "description": "The uploaded media",
+            "schema": {
+              "$ref": "#/definitions/UserMedia"
+            }
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/upload/photos": {
+      "post": {
+        "summary": "upload photos",
+        "description": "the field name : photos",
+        "parameters": [
+          {
+            "name": "UploadMediaDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UploadMediaDTO"
+            }
+          },
+          {
+            "name": "photos",
+            "required": true,
+            "in": "formData",
+            "description": "the photos to be uploaded",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The uploaded media"
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/upload/clip": {
+      "post": {
+        "summary": "upload voice clip",
+        "description": "the field name : clip",
+        "parameters": [
+          {
+            "name": "UploadMediaDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UploadMediaDTO"
+            }
+          },
+          {
+            "name": "clip",
+            "required": true,
+            "in": "formData",
+            "description": "the clip to be uploaded",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The uploaded media"
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/upload/files": {
+      "post": {
+        "summary": "upload files",
+        "description": "the field name : files",
+        "parameters": [
+          {
+            "name": "UploadMediaDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UploadMediaDTO"
+            }
+          },
+          {
+            "name": "files",
+            "required": true,
+            "in": "formData",
+            "description": "the file to be uploaded",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The uploaded media"
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/upload/video": {
+      "post": {
+        "summary": "upload video",
+        "description": "the field name : video",
+        "parameters": [
+          {
+            "name": "UploadVideoDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UploadVideoDTO"
+            }
+          },
+          {
+            "name": "video",
+            "required": true,
+            "in": "formData",
+            "description": "the video to be uploaded",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The uploaded media"
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/show": {
+      "get": {
+        "summary": "show media by id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested media",
+            "schema": {
+              "$ref": "#/definitions/UserMedia"
+            }
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/media/conversation-media": {
+      "get": {
+        "summary": "get conversation media/docs by conversationid",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "conversationId",
+            "required": true,
+            "in": "query",
+            "format": "hex-encoded representation of a MongoDB ObjectId",
+            "example": "507f191e810c19729de860ea"
+          },
+          {
+            "type": "string",
+            "name": "mediaTypes",
+            "required": true,
+            "in": "media, docs",
+            "example": "media"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "maximum": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested media",
+            "schema": {
+              "$ref": "#/definitions/UserMedia"
+            }
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/request": {
+      "post": {
+        "summary": "request a verification code",
+        "parameters": [
+          {
+            "name": "MobileVerificationStepOne",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/MobileVerificationStepOne"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/request/cancel": {
+      "post": {
+        "summary": "cancel the requested verification requestId",
+        "deprecated": true,
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/code": {
+      "post": {
+        "summary": "verify the requested verification requestId",
+        "parameters": [
+          {
+            "name": "MobileVerificationStepTwo",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/MobileVerificationStepTwo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/code/resend": {
+      "post": {
+        "summary": "resend verification code",
+        "deprecated": true,
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/create": {
+      "post": {
+        "summary": "Create New Advertisement",
+        "parameters": [
+          {
+            "name": "CreateAdvertisementDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateAdvertisementDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/{id}/update": {
+      "post": {
+        "summary": "Update Advertisement",
+        "parameters": [
+          {
+            "name": "UpdateAdvertisementDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateAdvertisementDTO"
+            }
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/{id}/statics": {
+      "get": {
+        "summary": "Get Advertisement Statics",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/pick": {
+      "get": {
+        "summary": "Get some Advertisements for current logged in user",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "count",
+            "required": true,
+            "in": "query",
+            "description": "how many ads do you want ? [max: 30]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/{id}/action": {
+      "post": {
+        "summary": "perform an [Click, View] against an Advertisement",
+        "parameters": [
+          {
+            "name": "PerformAdvertisementActionDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/PerformAdvertisementActionDTO"
+            }
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/category/create": {
+      "post": {
+        "summary": "Create New Advertisement Category",
+        "parameters": [
+          {
+            "name": "CreateAdvertisementCategoryDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateAdvertisementCategoryDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/{id}/status": {
+      "post": {
+        "summary": "Change The Stauts of an Advertisement [Employee Only]",
+        "parameters": [
+          {
+            "name": "ChangeAdvertisementStatusDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ChangeAdvertisementStatusDTO"
+            }
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/list": {
+      "get": {
+        "summary": "get a list of Advertisements -optinaly for a spesific user-",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "activeOnly",
+            "required": true,
+            "in": "query",
+            "description": "get only the active ads"
+          },
+          {
+            "type": "number",
+            "name": "forUserId",
+            "required": false,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ads/category/{id}/remove": {
+      "delete": {
+        "summary": "Remove Advertisement Category by id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Advertisement"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/sync": {
+      "get": {
+        "summary": "Sync Notifications",
+        "description": "let user get his all notifications. [LIMITED]",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/poll": {
+      "get": {
+        "summary": "Poll Notifications from the server",
+        "description": "let user get new notifications from the server with timestamp",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "ts",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/store": {
+      "post": {
+        "summary": "Store Notifications",
+        "parameters": [
+          {
+            "name": "StoreNotificationDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/StoreNotificationDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/subscribe": {
+      "post": {
+        "summary": "Subscribe To User Or Status",
+        "description": "let user subscribe to a user or a status, so he will get notified when there is an update",
+        "parameters": [
+          {
+            "name": "TopicSubscriptionDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/TopicSubscriptionDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/mention": {
+      "post": {
+        "summary": "Subscribe (mention) a User to Status",
+        "description": "let some user mention the other to a status.\n      so he will get notified when there is an update",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "UserMentionDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserMentionDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/unsubscribe": {
+      "post": {
+        "summary": "UnSubscribe from User Or Status",
+        "description": "stop getting Notifictions about the given user or status",
+        "parameters": [
+          {
+            "name": "TopicSubscriptionDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/TopicSubscriptionDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/notifications/notify": {
+      "post": {
+        "summary": "Send Notifications",
+        "description": "Send notifications to these users with there ids [Employee Only]",
+        "parameters": [
+          {
+            "name": "NotifyDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/NotifyDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/status/create": {
+      "post": {
+        "summary": "create new status",
+        "parameters": [
+          {
+            "name": "CreateStatusDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateStatusDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The Created Status",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/status/delete": {
+      "delete": {
+        "summary": "delete status by id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Deleted"
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/show/{id}/statuses": {
+      "get": {
+        "summary": "get user statuses by id",
+        "description": "for user timeline see Timeline section",
+        "deprecated": true,
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "includeReplies",
+            "required": true,
+            "in": "query",
+            "description": "should we include replies when getting user statuses ?"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "type",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested user Statuses",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/me/show/actions": {
+      "get": {
+        "summary": "get user actions",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "type",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested user Actions",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusActions"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/status/{id}/actions": {
+      "get": {
+        "summary": "get status actions",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "type",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested status Actions",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusActions"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/status/{id}/shares": {
+      "get": {
+        "summary": "get status shares",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested status shares",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/status/{id}/replies": {
+      "get": {
+        "summary": "get status replies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "sortByReactions",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested status replies",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/status": {
+      "get": {
+        "summary": "view status by id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested status",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/status/action": {
+      "post": {
+        "summary": "make action on status by id",
+        "parameters": [
+          {
+            "name": "StatusActionDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/StatusActionDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created action"
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/recommendation": {
+      "get": {
+        "summary": "get status recommendation",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "lat",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "long",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "distance",
+            "required": false,
+            "in": "query",
+            "description": "distance in meters"
+          },
+          {
+            "type": "string",
+            "name": "maxRate",
+            "required": false,
+            "in": "query",
+            "default": "5.0",
+            "maximum": 5
+          },
+          {
+            "type": "string",
+            "name": "minRate",
+            "required": false,
+            "in": "query",
+            "default": "1.0",
+            "minimum": 0
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "default": "30"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/questions": {
+      "get": {
+        "summary": "get users questions (help)",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "priority",
+            "required": false,
+            "in": "query",
+            "default": "10",
+            "maximum": 10,
+            "minimum": 1
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "default": "30"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/me/questions": {
+      "get": {
+        "summary": "get personal users questions (help)",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "priority",
+            "required": false,
+            "in": "query",
+            "default": "10",
+            "maximum": 10,
+            "minimum": 1
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "default": "30"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/edit/{id}/questions": {
+      "post": {
+        "summary": "Edit quesion by {id}",
+        "parameters": [
+          {
+            "name": "EditQuestion",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/EditQuestion"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/view/global-media": {
+      "get": {
+        "summary": "get global media around some location",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "lat",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "long",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "distance",
+            "required": false,
+            "in": "query",
+            "description": "distance in meters",
+            "default": "10000"
+          },
+          {
+            "type": "string",
+            "name": "countOnly",
+            "required": false,
+            "in": "query",
+            "description": "get only the count, without the Statuses",
+            "default": true
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "default": "30"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/search/channel-media": {
+      "get": {
+        "summary": "get channel media by keyword",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "q",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Status"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/home/timeline": {
+      "get": {
+        "summary": "get your home timeline",
+        "description": "get your contacts and friends statuses",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "liveVideoOnly",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "lastTime",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested timeline",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/home/channels": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "mediaLimitPerChannel",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/home/me/channel": {
+      "get": {
+        "parameters": [
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/home/{id}/channel": {
+      "get": {
+        "summary": "Get Channel By ID",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "channel info returned"
+          },
+          "404": {
+            "description": "channel not found"
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/home/stories": {
+      "get": {
+        "summary": "get your home stories",
+        "description": "get your contacts and friends last stories",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested stories",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/home/top-global-media-id": {
+      "get": {
+        "summary": "get current top global media id",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/country/timeline": {
+      "get": {
+        "summary": "get timeline from many countries",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "channelMediaOnly",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "liveVideoOnly",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "sortBy",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "from",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "lastTime",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested timeline",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/{id}/timeline": {
+      "get": {
+        "summary": "get user timeline",
+        "description": "list all statuses from user timeline",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "mediaOnly",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested timeline",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/{id}/timeline/story": {
+      "get": {
+        "summary": "get user sotries at last day",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested user stories",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "tags": [
+          "Timeline"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/stream/live/reserve": {
+      "post": {
+        "summary": "Reserve a new Channel for you",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "shouldRecord",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Live Video"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/stream/live/start": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Live Video"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/stream/live/stop": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Live Video"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/stream/live/listen": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Live Video"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/stream/live/record": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Live Video"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/stream/live/update": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Live Video"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/country/{country}": {
+      "get": {
+        "parameters": [
+          {
+            "type": "number",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "filterBy",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "country",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/view/user/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/view/systemAccounts": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/view/user/{id}/statics": {
+      "get": {
+        "parameters": [
+          {
+            "type": "number",
+            "name": "year",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/list/accounts": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/country/{country}/statics": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "country",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/global/statics": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/analytics/home/global/statics": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/payments/verify": {
+      "post": {
+        "summary": "Verify user Payment",
+        "parameters": [
+          {
+            "name": "VerifyPaymentDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/VerifyPaymentDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Payment"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/profile/myrequests": {
+      "get": {
+        "summary": "Get all my profile verification requests",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/profile/allrequests": {
+      "get": {
+        "summary": "Get all profile verification requests with some status",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/profile/create": {
+      "post": {
+        "summary": "Create a profile verification request",
+        "parameters": [
+          {
+            "name": "ProfileVerificationDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ProfileVerificationDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/profile/cancel/my/{reqid}": {
+      "post": {
+        "summary": "Cancel my profile verification request",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "reqid",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/profile/cancel/{reqid}": {
+      "post": {
+        "summary": "Cancel my profile verification request",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "reqid",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/user/verify/profile/accept/{reqid}": {
+      "post": {
+        "summary": "Accept a profile verification request",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "reqid",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/techsupport/create/thread": {
+      "post": {
+        "summary": "Create New Technical Support Message",
+        "parameters": [
+          {
+            "name": "TechThreadDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/TechThreadDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TechnicalSupport"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/techsupport/reply/thread/{threadId}": {
+      "post": {
+        "summary": "Reply to a created Thread",
+        "parameters": [
+          {
+            "name": "TechThreadDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/TechThreadDTO"
+            }
+          },
+          {
+            "type": "string",
+            "name": "threadId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TechnicalSupport"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/techsupport/thread/{threadId}/info": {
+      "post": {
+        "summary": "Get all thread info and messages",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "threadId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TechnicalSupport"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/techsupport/all/my/threads": {
+      "get": {
+        "summary": "Get all My threads",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TechnicalSupport"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/techsupport/all/threads": {
+      "get": {
+        "summary": "Get All threads in the system [Employee Only]",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "solvedOnly",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TechnicalSupport"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/techsupport/thread/{threadId}/close": {
+      "post": {
+        "summary": "Mark a thread as Solved",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "threadId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TechnicalSupport"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/report/create": {
+      "post": {
+        "summary": "report a user or a status",
+        "parameters": [
+          {
+            "name": "CreateReportDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateReportDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reports"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/report/listall": {
+      "get": {
+        "summary": "list all reports",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reports"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/report/list/{userId}": {
+      "get": {
+        "summary": "list all reports for user",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "userId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reports"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/report/{reportId}": {
+      "delete": {
+        "summary": "delete a report by id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "reportId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reports"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "get": {
+        "summary": "get a report by id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "reportId",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reports"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/video": {
+      "get": {
+        "summary": "Get Recent Uploaded Video",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "Update Static Video",
+        "parameters": [
+          {
+            "name": "UpdateMediaDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateMediaDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/image": {
+      "get": {
+        "summary": "Get Recent Uploaded Image",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "Update Static Image",
+        "parameters": [
+          {
+            "name": "UpdateMediaDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateMediaDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/competition/tos": {
+      "get": {
+        "summary": "Get Competition Terms of use",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "Set Competition Terms of use",
+        "parameters": [
+          {
+            "name": "SetHtmlDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SetHtmlDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/competition/prizes": {
+      "get": {
+        "summary": "Get Competition Prizes",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "Set Competition Prizes",
+        "parameters": [
+          {
+            "name": "SetHtmlDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SetHtmlDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/competition/winners": {
+      "get": {
+        "summary": "Get Competition Winners (statuses)",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/competition/top": {
+      "get": {
+        "summary": "Get Todays Competition Winners (statuses)",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/static/competition/winner": {
+      "post": {
+        "summary": "Set Todays Competition Winner (status)",
+        "parameters": [
+          {
+            "name": "StatusWinnerDTO",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/StatusWinnerDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "StaticFiles"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "default": "en"
+        },
+        "location": {
+          "type": "string",
+          "description": "The User Location in \"Lat,Long\" form. eg: \"25.790000,30.698929\" "
+        },
+        "country": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "countryDialCode": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string",
+          "default": "male",
+          "in": "male, female, others"
+        },
+        "birthdate": {
+          "type": "string",
+          "description": "a Date Fromat YYYY-MM-DD"
+        },
+        "description": {
+          "type": "string",
+          "description": "max length 140 char."
+        },
+        "education": {
+          "type": "string"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "facebookLink": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "language",
+        "gender",
+        "birthdate"
+      ]
+    },
+    "CreateUserDTO": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "the requestId climed at verification process"
+        },
+        "photoId": {
+          "type": "string",
+          "description": "the photoId uploaded to the server as Base64 encoded"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "the user mobile number"
+        },
+        "user": {
+          "title": "User",
+          "allOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "description": "User Object"
+            }
+          ]
+        },
+        "profile": {
+          "title": "Profile",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Profile"
+            },
+            {
+              "description": "Profile Object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "requestId",
+        "photoId",
+        "mobileNumber",
+        "user",
+        "profile"
+      ]
+    },
+    "UpdateUserDTO": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "title": "User",
+          "allOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "description": "User Object"
+            }
+          ]
+        },
+        "profile": {
+          "title": "Profile",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Profile"
+            },
+            {
+              "description": "Profile Object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "user",
+        "profile"
+      ]
+    },
+    "UpdateChannelDTO": {
+      "type": "object",
+      "properties": {
+        "channelName": {
+          "type": "string"
+        },
+        "describtion": {
+          "type": "string"
+        },
+        "isPublicGlobal": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UpdateProfilePicDTO": {
+      "type": "object",
+      "properties": {
+        "photoId": {
+          "type": "string",
+          "description": "the media id"
+        }
+      },
+      "required": [
+        "photoId"
+      ]
+    },
+    "UserTokenDTO": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "the old user token"
+        }
+      },
+      "required": [
+        "token"
+      ]
+    },
+    "DeviceTokenDTO": {
+      "type": "object",
+      "properties": {
+        "deviceToken": {
+          "type": "string",
+          "description": "the new device token"
+        }
+      },
+      "required": [
+        "deviceToken"
+      ]
+    },
+    "UserMacAdressDTO": {
+      "type": "object",
+      "properties": {
+        "macAdress": {
+          "type": "string",
+          "description": "the user mac adress"
+        }
+      },
+      "required": [
+        "macAdress"
+      ]
+    },
+    "UserStateDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "the user id"
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "the user state"
+        }
+      },
+      "required": [
+        "id",
+        "isActive"
+      ]
+    },
+    "LoginProcess": {
+      "type": "object",
+      "properties": {
+        "mobileNumber": {
+          "type": "string",
+          "description": "the user mobile number"
+        },
+        "countryDialCode": {
+          "type": "string",
+          "description": "the user mobile number country code"
+        }
+      },
+      "required": [
+        "mobileNumber",
+        "countryDialCode"
+      ]
+    },
+    "LoginVerify": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "the code recived in the message"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "the user mobile number"
+        },
+        "countryDialCode": {
+          "type": "string",
+          "description": "the user mobile number country code"
+        },
+        "requestId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "mobileNumber",
+        "countryDialCode",
+        "requestId"
+      ]
+    },
+    "UserContactsInformation": {
+      "type": "object",
+      "properties": {
+        "mobileNumber": {
+          "type": "string",
+          "description": "the contact mobile number, must be in the full format i.e. `20xxxxxxxxx`"
+        },
+        "contactName": {
+          "type": "string",
+          "description": "the contact name"
+        }
+      },
+      "required": [
+        "mobileNumber",
+        "contactName"
+      ]
+    },
+    "UploadContactsDTO": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "description": "the user contacts",
+          "items": {
+            "$ref": "#/definitions/UserContactsInformation"
+          }
+        }
+      },
+      "required": [
+        "data"
+      ]
+    },
+    "UserContacts": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "Contact Mobile Number"
+        },
+        "contactName": {
+          "type": "string"
+        },
+        "isFavourite": {
+          "type": "boolean"
+        },
+        "isUser": {
+          "type": "boolean",
+          "description": "Is This Contact a current user ?"
+        },
+        "userId": {
+          "type": "object",
+          "description": "if this contact a current user, then this will be his id"
+        },
+        "isBlocked": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "user",
+        "mobileNumber",
+        "contactName",
+        "isFavourite",
+        "isUser",
+        "userId",
+        "isBlocked"
+      ]
+    },
+    "FollowRequestDTO": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "the user id"
+        }
+      },
+      "required": [
+        "userId"
+      ]
+    },
+    "HandleChannelFollowRequestDTO": {
+      "type": "object",
+      "properties": {}
+    },
+    "UsersPrivacy": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "me": {
+          "$ref": "#/definitions/User"
+        },
+        "other": {
+          "$ref": "#/definitions/User"
+        },
+        "type": {
+          "type": "number",
+          "description": "the block type"
+        }
+      },
+      "required": [
+        "me",
+        "other",
+        "type"
+      ]
+    },
+    "BlockUserDTO": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "the user id"
+        },
+        "type": {
+          "type": "object",
+          "description": "the block type, one of [none, all, profile, chatOnly]"
+        }
+      },
+      "required": [
+        "userId",
+        "type"
+      ]
+    },
+    "BlockChannelDTO": {
+      "type": "object",
+      "properties": {
+        "channelId": {
+          "type": "string",
+          "description": "the channel id"
+        }
+      },
+      "required": [
+        "channelId"
+      ]
+    },
+    "UserMedia": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        },
+        "mimetype": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "thumbnails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conversationId": {
+          "type": "object"
+        },
+        "mediaHash": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "required": [
+        "url",
+        "type",
+        "size",
+        "mimetype",
+        "duration",
+        "thumbnails",
+        "conversationId",
+        "mediaHash",
+        "user"
+      ]
+    },
+    "UploadMediaDTO": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "default": null,
+          "format": "hex-encoded representation of a MongoDB ObjectId",
+          "example": "507f191e810c19729de860ea"
+        }
+      }
+    },
+    "UploadVideoDTO": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "default": null,
+          "format": "hex-encoded representation of a MongoDB ObjectId",
+          "example": "507f191e810c19729de860ea"
+        },
+        "waitForThumbnail": {
+          "type": "boolean",
+          "default": false,
+          "example": false,
+          "description": "wait until server generate thumbnails for that video?"
+        }
+      }
+    },
+    "MobileVerificationStepOne": {
+      "type": "object",
+      "properties": {
+        "mobileNumber": {
+          "type": "string"
+        },
+        "countryDialCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mobileNumber",
+        "countryDialCode"
+      ]
+    },
+    "MobileVerificationStepTwo": {
+      "type": "object",
+      "properties": {
+        "mobileNumber": {
+          "type": "string"
+        },
+        "countryDialCode": {
+          "type": "string"
+        },
+        "requestId": {
+          "type": "string"
+        },
+        "code": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "mobileNumber",
+        "countryDialCode",
+        "requestId",
+        "code"
+      ]
+    },
+    "CreateAdvertisementDTO": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "the advertisement type",
+          "in": "photo, video"
+        },
+        "categoryIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "width": {
+          "type": "number",
+          "description": "the advertisement width",
+          "maximum": 1000,
+          "minimum": 100
+        },
+        "points": {
+          "type": "number",
+          "description": "the advertisement Points"
+        },
+        "height": {
+          "type": "number",
+          "description": "the advertisement height",
+          "maximum": 1000,
+          "minimum": 100
+        },
+        "text": {
+          "type": "string",
+          "description": "the advertisement text",
+          "maxLength": 5000
+        },
+        "url": {
+          "type": "string",
+          "description": "the advertisement url",
+          "maxLength": 5000
+        },
+        "mediaId": {
+          "type": "string",
+          "description": "the advertisement media id, the video or the photo"
+        },
+        "targetCountry": {
+          "type": "string"
+        },
+        "targetLocation": {
+          "type": "string"
+        },
+        "targetAgeRange": {
+          "type": "string",
+          "description": "The Target Age Range",
+          "in": "0:18,18:22,22:26,26:30,30:34,34:38,38:42,42:46,46:50,50:54,54:58,58:62,62:66,66:70"
+        },
+        "targetRange": {
+          "type": "number",
+          "description": "The Target Geo Range in meters"
+        },
+        "targetGender": {
+          "type": "string",
+          "description": "The Target Gender",
+          "in": "male,female,all"
+        },
+        "expiresInDays": {
+          "type": "number",
+          "description": "How many days should this ad appears"
+        }
+      },
+      "required": [
+        "type",
+        "categoryIds",
+        "width",
+        "points",
+        "height",
+        "targetCountry",
+        "targetLocation",
+        "targetAgeRange",
+        "targetRange",
+        "targetGender",
+        "expiresInDays"
+      ]
+    },
+    "UpdateAdvertisementDTO": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "the advertisement text",
+          "maxLength": 5000
+        },
+        "url": {
+          "type": "string",
+          "description": "the advertisement url",
+          "maxLength": 5000
+        },
+        "mediaId": {
+          "type": "string",
+          "description": "the advertisement media id, the video or the photo"
+        },
+        "targetCountry": {
+          "type": "string"
+        },
+        "targetLocation": {
+          "type": "string"
+        },
+        "targetAgeRange": {
+          "type": "string",
+          "description": "The Target Age Range",
+          "in": "0:18,18:22,22:26,26:30,30:34,34:38,38:42,42:46,46:50,50:54,54:58,58:62,62:66,66:70"
+        },
+        "targetRange": {
+          "type": "number",
+          "description": "The Target Geo Range in meters"
+        },
+        "targetGender": {
+          "type": "string",
+          "description": "The Target Gender",
+          "in": "male,female,all"
+        }
+      },
+      "required": [
+        "targetCountry",
+        "targetLocation",
+        "targetAgeRange",
+        "targetRange",
+        "targetGender"
+      ]
+    },
+    "PerformAdvertisementActionDTO": {
+      "type": "object",
+      "properties": {
+        "actionType": {
+          "type": "string",
+          "enum": [
+            "AD_CLICK",
+            "AD_POSITIVE_VIEW",
+            "AD_NEGATIVE_VIEW"
+          ],
+          "description": "the action type"
+        }
+      },
+      "required": [
+        "actionType"
+      ]
+    },
+    "CreateAdvertisementCategoryDTO": {
+      "type": "object",
+      "properties": {}
+    },
+    "ChangeAdvertisementStatusDTO": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "description": "the new Advertisement status"
+        }
+      },
+      "required": [
+        "status"
+      ]
+    },
+    "StoreNotificationDTO": {
+      "type": "object",
+      "properties": {
+        "senderId": {
+          "type": "string",
+          "description": "the author of the action/status"
+        },
+        "statusId": {
+          "type": "string"
+        },
+        "statusOwner": {
+          "type": "string"
+        },
+        "channelId": {
+          "type": "string",
+          "description": "used in live video notifications"
+        },
+        "statusType": {
+          "type": "string"
+        },
+        "actionType": {
+          "type": "string"
+        },
+        "notificationType": {
+          "type": "string"
+        },
+        "senderProfilePic": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "notificationType"
+      ]
+    },
+    "TopicSubscriptionDTO": {
+      "type": "object",
+      "properties": {
+        "entityId": {
+          "type": "string",
+          "description": "entityId maybe a userId or a statusId"
+        },
+        "type": {
+          "type": "string",
+          "description": "the entity type, one of [status, user]"
+        }
+      },
+      "required": [
+        "entityId",
+        "type"
+      ]
+    },
+    "UserMentionDTO": {
+      "type": "object",
+      "properties": {
+        "userIds": {
+          "type": "array",
+          "description": "userIds that will be mentioned on statusId",
+          "items": {
+            "type": "string"
+          }
+        },
+        "statusId": {
+          "type": "string",
+          "description": "statusId, could be also a comment or a reply"
+        }
+      },
+      "required": [
+        "userIds",
+        "statusId"
+      ]
+    },
+    "NotifyDTO": {
+      "type": "object",
+      "properties": {
+        "userIds": {
+          "type": "array",
+          "description": "userIds that will be notified",
+          "maxItems": 100,
+          "uniqueItems": true,
+          "items": {
+            "type": "array"
+          }
+        },
+        "title": {
+          "type": "string",
+          "description": "the notification title"
+        },
+        "body": {
+          "type": "string",
+          "description": "the notification body"
+        }
+      },
+      "required": [
+        "userIds",
+        "title",
+        "body"
+      ]
+    },
+    "CreateStatusDTO": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Status Text",
+          "default": "New Status Text"
+        },
+        "isReply": {
+          "type": "boolean",
+          "default": false
+        },
+        "isShare": {
+          "type": "boolean",
+          "default": false
+        },
+        "isLive": {
+          "type": "boolean",
+          "default": false
+        },
+        "isPublicGlobal": {
+          "type": "boolean",
+          "default": false
+        },
+        "hideOriginalStatusOwner": {
+          "type": "boolean",
+          "default": false
+        },
+        "isGeoEnabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "hasPrivacy": {
+          "type": "boolean",
+          "default": false
+        },
+        "inReplyToStatusId": {
+          "type": "string",
+          "default": "0"
+        },
+        "withUserId": {
+          "type": "string",
+          "default": "0",
+          "description": "if this status should be in another user's timeline"
+        },
+        "channelId": {
+          "type": "string",
+          "example": "1234567890abcdef123456789"
+        },
+        "stars": {
+          "type": "number",
+          "example": 4.9
+        },
+        "locationName": {
+          "type": "string",
+          "example": "My Place Name"
+        },
+        "shareToStatusId": {
+          "type": "string",
+          "default": "0"
+        },
+        "coordinates": {
+          "type": "string",
+          "example": "29.123,30.1234"
+        },
+        "hasMedia": {
+          "type": "boolean",
+          "default": false
+        },
+        "mediaIds": {
+          "type": "array",
+          "default": [],
+          "maxLength": 5,
+          "items": {
+            "type": "array"
+          }
+        },
+        "mentions": {
+          "type": "array",
+          "default": [],
+          "maxLength": 25,
+          "items": {
+            "type": "array"
+          }
+        },
+        "mediaType": {
+          "type": "string",
+          "description": "the uploaded media type",
+          "in": "video, photo, voice"
+        },
+        "privacy": {
+          "type": "string",
+          "description": "one of [public, contactsOnly, onlyMe]",
+          "in": "public, contactsOnly, onlyMe"
+        },
+        "type": {
+          "type": "string",
+          "description": "one of [rate, status, media, story, channelMedia, help]",
+          "in": "rate, status, media, story, channelMedia, help"
+        },
+        "priority": {
+          "type": "number",
+          "description": "one of [1, 10]"
+        }
+      },
+      "required": [
+        "text",
+        "isReply",
+        "isShare",
+        "isLive",
+        "isGeoEnabled",
+        "hasPrivacy",
+        "inReplyToStatusId",
+        "withUserId",
+        "channelId",
+        "stars",
+        "locationName",
+        "shareToStatusId",
+        "coordinates",
+        "hasMedia",
+        "mediaIds",
+        "mediaType",
+        "privacy",
+        "type"
+      ]
+    },
+    "Counters": {
+      "type": "object",
+      "properties": {
+        "likesCount": {
+          "type": "number"
+        },
+        "dislikesCount": {
+          "type": "number"
+        },
+        "sharedCount": {
+          "type": "number"
+        },
+        "commentCount": {
+          "type": "number"
+        },
+        "viewsCount": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "likesCount",
+        "dislikesCount",
+        "sharedCount",
+        "commentCount",
+        "viewsCount"
+      ]
+    },
+    "Status": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "user": {
+          "type": "object"
+        },
+        "text": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "object",
+          "description": "The main status"
+        },
+        "replies": {
+          "type": "array",
+          "description": "array of statuses as replies on main status",
+          "items": {
+            "type": "object"
+          }
+        },
+        "originalStatus": {
+          "type": "object",
+          "description": "the orignal status where this status shared from"
+        },
+        "hideOriginalStatusOwner": {
+          "type": "boolean"
+        },
+        "stars": {
+          "type": "number"
+        },
+        "locationName": {
+          "type": "string"
+        },
+        "coordinates": {
+          "type": "string"
+        },
+        "hasMedia": {
+          "type": "boolean"
+        },
+        "hasPrivacy": {
+          "type": "boolean"
+        },
+        "isShare": {
+          "type": "boolean"
+        },
+        "isPublicGlobal": {
+          "type": "boolean"
+        },
+        "isReply": {
+          "type": "boolean"
+        },
+        "isLive": {
+          "type": "boolean"
+        },
+        "liveVideoChannelId": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "object"
+        },
+        "privacy": {
+          "type": "object"
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "type": "array"
+          }
+        },
+        "contactsToshow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mentions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "withUserId": {
+          "type": "string"
+        },
+        "local_id": {
+          "type": "string"
+        },
+        "counters": {
+          "$ref": "#/definitions/Counters"
+        }
+      },
+      "required": [
+        "user",
+        "text",
+        "parent",
+        "replies",
+        "originalStatus",
+        "hideOriginalStatusOwner",
+        "stars",
+        "locationName",
+        "coordinates",
+        "hasMedia",
+        "hasPrivacy",
+        "isShare",
+        "isPublicGlobal",
+        "isReply",
+        "isLive",
+        "liveVideoChannelId",
+        "channel",
+        "privacy",
+        "media",
+        "contactsToshow",
+        "mentions",
+        "type",
+        "withUserId",
+        "local_id"
+      ]
+    },
+    "StatusActions": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "description": "Auto Generated Id"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Auto Generated Date"
+        },
+        "user": {
+          "type": "object"
+        },
+        "status": {
+          "$ref": "#/definitions/Status"
+        },
+        "type": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "user",
+        "status",
+        "type"
+      ]
+    },
+    "StatusActionDTO": {
+      "type": "object",
+      "properties": {
+        "statusId": {
+          "type": "string"
+        },
+        "actionType": {
+          "type": "string",
+          "description": "one of [like, dislike, view]"
+        }
+      },
+      "required": [
+        "statusId",
+        "actionType"
+      ]
+    },
+    "EditQuestion": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "string",
+          "default": "10",
+          "maximum": 10,
+          "minimum": 1
+        },
+        "solved": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "solved"
+      ]
+    },
+    "AmountDTO": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "total": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "currency",
+        "total"
+      ]
+    },
+    "TransactionDTO": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "#/definitions/AmountDTO"
+        },
+        "description": {
+          "type": "string"
+        },
+        "invoice_number": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "amount"
+      ]
+    },
+    "PaymentDTO": {
+      "type": "object",
+      "properties": {
+        "intent": {
+          "type": "string"
+        },
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TransactionDTO"
+          }
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "created",
+            "approved",
+            "failed"
+          ]
+        }
+      },
+      "required": [
+        "transactions",
+        "state"
+      ]
+    },
+    "VerifyPaymentDTO": {
+      "type": "object",
+      "properties": {
+        "paymentId": {
+          "type": "string"
+        },
+        "clientPayment": {
+          "$ref": "#/definitions/PaymentDTO"
+        }
+      },
+      "required": [
+        "paymentId",
+        "clientPayment"
+      ]
+    },
+    "ProfileVerificationDTO": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "in": "company, publicFiguare"
+        },
+        "mediaId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "mediaId"
+      ]
+    },
+    "TechThreadDTO": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "CreateReportDTO": {
+      "type": "object",
+      "properties": {
+        "entityId": {
+          "type": "string"
+        },
+        "entityType": {
+          "type": "string",
+          "description": "one of [user, status]"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entityId",
+        "entityType",
+        "reason"
+      ]
+    },
+    "UpdateMediaDTO": {
+      "type": "object",
+      "properties": {
+        "mediaId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mediaId"
+      ]
+    },
+    "SetHtmlDTO": {
+      "type": "object",
+      "properties": {
+        "html": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "html"
+      ]
+    },
+    "StatusWinnerDTO": {
+      "type": "object",
+      "properties": {
+        "statusId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "statusId"
+      ]
+    }
+  }
+}

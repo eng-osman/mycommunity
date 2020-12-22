@@ -1,0 +1,6 @@
+export enum VerificationStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  CANCELED = 'CANCELED',
+  CANCELED_BY_USER = 'CANCELED_BY_USER',
+}

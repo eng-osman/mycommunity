@@ -1,0 +1,14 @@
+.vscode
+archives
+benchmark
+config
+deployment
+node_modules
+public
+scripts
+scripts
+.env.*
+.node-dev.json
+.prettierrc
+*.log
+*.md

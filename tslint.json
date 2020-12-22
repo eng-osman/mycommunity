@@ -1,0 +1,19 @@
+{
+  "defaultSeverity": "warning",
+  "extends": ["tslint:recommended"],
+  "jsRules": {},
+  "rules": {
+    "max-line-length": {
+      "options": [100]
+    },
+    "variable-name": false,
+    "quotemark": false,
+    "object-literal-sort-keys": false,
+    "radix": false,
+    "array-type": false,
+    "arrow-parens": false,
+    "no-return-await": true,
+    "interface-name": false
+  },
+  "rulesDirectory": []
+}

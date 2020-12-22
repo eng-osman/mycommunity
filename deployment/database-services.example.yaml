@@ -1,0 +1,40 @@
+﻿version: '3.1'
+services:
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=USER_HERE
+      - MONGO_INITDB_ROOT_PASSWORD=PASSWORD_HERE
+    volumes:
+      - /opt/db/mongo:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    command: >
+      --requirepass PASSWORD_HERE
+    volumes:
+      - /opt/db/redis:/data
+    ports:
+      - "6379:6379"
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=PASSWORD_HERE
+      - MYSQL_DATABASE=DB_NAME_HERE
+      - MYSQL_USER=USER_HERE
+      - MYSQL_PASSWORD=PASSWORD_HERE
+
+    volumes:
+      - /opt/db/mariadb:/var/lib/mysql
+    ports:
+      - "3306:3306"
